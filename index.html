@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <script src="webxdc.js"></script>
+        <style>
+         .red {
+             color: red;
+         }
+         h1 {
+             background-color: #415e6b;
+             color: white;
+             padding: 10px;
+         }
+        </style>
+    </head>
+    <body>
+        <div id="races-output"></div>
+        <script src="js/races.js"></script>
+
+        <div id="storage-output"></div>
+        <script src="js/storage.js"></script>
+
+        <div id="uploads-output"></div>
+        <script src="js/uploads.js"></script>
+
+        <div id="links-output">
+            <h1>Links</h1>
+            <ul>
+                <li><a href="https://delta.chat">Normal link: https://delta.chat</a></li>
+                <li><a href="mailto:delta@example.org?body=test+message">Mailto link</a></li>
+                <li><a href="OPENPGP4FPR:571E6FDC22C1605512A1B0C8F7AC9331B82AFB5B#a=delta%40example.org&n=TestContact&i=pHMb3fRw-JV&s=VcWU-pQSEeB">QR verification link</a></li>
+                <li><a href="cabal://cabal.chat">Custom scheme link</a></li>
+                <li><a href="./page.html">Link to an internal HTML page</a></li>
+            </ul>
+            <hr>
+        </div>
+
+        <!-- debugging -->
+        <script src="js/eruda.min.js"></script>
+        <script>window.addEventListener("load", () => eruda.init());</script>
+    </body>
+</html>
