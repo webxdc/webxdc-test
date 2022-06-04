@@ -1,0 +1,31 @@
+h3 {
+    margin: 10px 0;
+}
+
+header h2 {
+    margin: 0;
+}
+
+header {
+    background-color: #415e6b;
+    color: white;
+}
+
+.container:after,.container:before{
+    content:"";
+    display:table;
+    clear:both;
+}
+
+.container {
+    padding: 10px 16px
+}
+
+.red {
+    color: red;
+}
+
+.card {
+    box-shadow:0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    margin-bottom: 15px;
+}

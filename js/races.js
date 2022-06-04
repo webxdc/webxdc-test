@@ -1,13 +1,17 @@
 function reloadWidth() {
-    document.getElementById("races-width").innerHTML = "window.innerWidth = " + window.innerWidth;
+    document.getElementById("races-width").innerHTML = ` window.innerWidth = ${window.innerWidth} `;
 }
 
 window.addEventListener("load", () => {
-    var output = document.getElementById("races-output");
-    output.innerHTML = "<h1>innerWidth</h1>";
-    output.innerHTML += '<span id="races-width"><strong>On Load:</strong> window.innerWidth = ' + window.innerWidth + "</span>";
-    output.innerHTML += ' <button onclick="reloadWidth()">Refresh</button>'
-    output.innerHTML += "<hr>";
+    document.getElementById("races-output").append(
+        createHeader("innerWidth"),
+        h("div", {class: "container"},
+          h("span", {id: "races-width"},
+            h("strong", {}, "On Load:"), ` window.innerWidth = ${window.innerWidth} `,
+           ),
+          h("button", {onclick: "reloadWidth()"}, "Refresh")
+         )
+    );
 });
 
 window.addEventListener("resize", () => {
