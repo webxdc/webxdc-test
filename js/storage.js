@@ -1,8 +1,8 @@
 function isStorageSupported(storageType) {
-    var testKey = "__test__";
+    let testKey = "__test__";
 
     try {
-        var storage = (storageType === "localStorage")? window.localStorage : window.sessionStorage;
+        let storage = (storageType === "localStorage")? window.localStorage : window.sessionStorage;
         storage.setItem(testKey, "1");
         storage.removeItem(testKey);
         return true;
@@ -12,60 +12,54 @@ function isStorageSupported(storageType) {
 }
 
 function testStorage(output, storageType) {
-    var storage = (storageType === "localStorage")? window.localStorage : window.sessionStorage;
-    output.innerHTML += "<h2>" + storageType + "</h2>";
+    let storage = (storageType === "localStorage")? window.localStorage : window.sessionStorage;
+    output.appendChild(h("h3", {}, storageType));
     if (isStorageSupported(storageType)) {
-        var counterKey = storageType + "_storageCounter";
-        var count = parseInt(storage.getItem(counterKey) || 0) + 1;
-        var counter = document.createElement("span");
-        counter.id = storageType + "-counter";
-        counter.innerHTML = count;
+        let counterKey = storageType + "_storageCounter";
+        let count = parseInt(storage.getItem(counterKey) || 0) + 1;
 
-        output.innerHTML += "Counter: ";
-        output.append(counter);
+        output.append("Counter: ", h("span", {id: counterKey}, count));
         storage.setItem(counterKey, count);
         window.addEventListener('storage', (event) => {
             console.log("[Storage] WARNING: got a new event: " + event.key + "=" + JSON.stringify(event.newValue));
             if (event.key === counterKey) {
-                document.getElementById(counter.id).innerHTML = event.newValue;
+                document.getElementById(counterKey).innerHTML = event.newValue;
             }
         });
     } else {
-        output.innerHTML += "<strong class=\"red\">WARNING: </strong>" + storageType + " is not supported.";
+        output.append(h("strong", {class: "red"}, "WARNING: "), storageType + " is not supported.");
     }
 }
 
 function testIndexedDB(output) {
-    output.innerHTML += "<h2>indexedDB</h2>";
-    var div = document.createElement("div");
-    div.id = "indexeddb-counter";
-    output.append(div);
+    output.appendChild(h("h3", {}, "indexedDB"));
 
-    var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+    let indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
     if (indexedDB) {
-        var open = indexedDB.open("__testDatabase", 1);
+        output.append("Counter: ", h("span", {id: "indexeddb-counter"}));
+        let open = indexedDB.open("__testDatabase", 1);
 
         open.onupgradeneeded = function () {
-            var db = open.result;
-            var store = db.createObjectStore("MyObjectStore", {keyPath: "id"});
+            let db = open.result;
+            let store = db.createObjectStore("MyObjectStore", {keyPath: "id"});
             store.createIndex("NameIndex", ["counter"]);
         };
 
         open.onsuccess = function () {
-            var db = open.result;
-            var tx = db.transaction("MyObjectStore", "readwrite");
-            var store = tx.objectStore("MyObjectStore");
+            let db = open.result;
+            let tx = db.transaction("MyObjectStore", "readwrite");
+            let store = tx.objectStore("MyObjectStore");
 
-            var getter = store.get(12345);
+            let getter = store.get(12345);
 
             getter.onsuccess = function () {
-                var cnt = 0;
+                let cnt = 0;
                 if (typeof getter.result == "undefined") {
                     cnt = 1;
                 } else {
                     cnt = parseInt(getter.result.counter) + 1;
                 }
-                document.getElementById("indexeddb-counter").innerHTML = "Counter: " + cnt;
+                document.getElementById("indexeddb-counter").innerHTML = cnt;
                 store.put({id: 12345, counter: cnt});
             };
 
@@ -74,16 +68,14 @@ function testIndexedDB(output) {
             };
         }
     } else {
-        div.innerHTML = "<strong class=\"red\">WARNING: </strong>IndexDB not available.";
+        output.append(h("strong", {class: "red"}, "WARNING: "), "IndexDB not available.");
     }
 }
 
 window.addEventListener("load", () => {
-    var output = document.getElementById("storage-output");
-    output.innerHTML = "<h1>Storage</h1>";
-
-    testStorage(output, "localStorage");
-    testStorage(output, "sessionStorage");
-    testIndexedDB(output);
-    output.innerHTML += "<hr>";
+    let div = h("div", {class: "container"});
+    testStorage(div, "localStorage");
+    testStorage(div, "sessionStorage");
+    testIndexedDB(div);
+    document.getElementById("storage-output").append(createHeader("Storage"), div);
 });
