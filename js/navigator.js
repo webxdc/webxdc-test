@@ -3,12 +3,13 @@ function refreshNavigatorLanguage() {
 }
 
 window.addEventListener("load", () => {
-    let language = window.navigator && window.navigator.language;
     document.getElementById("navigator-output").append(
         createHeader("Navigator"),
         h("div", {class: "container"},
+          h("strong", {}, "User Agent: "), window.navigator.userAgent,
+          h("br"),
           h("strong", {}, "Language: "),
-          h("span", {id: "navigator-language"}, language), " ",
+          h("span", {id: "navigator-language"}, window.navigator.language), " ",
           h("button", {onclick: "refreshNavigatorLanguage();"}, "Refresh"),
           h("br"),
           "Vibration test: ", h("button", {onclick: "window.navigator.vibrate(500);"}, "Vibrate")
