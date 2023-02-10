@@ -27,7 +27,7 @@ window.addEventListener("load", () => {
         document.getElementById("previous-runs").innerHTML = previousUpdates;
         document.getElementById("current-run").innerHTML = currentUpdates;
     }).then(() => {
-        updatesInitialized = true
+        updatesInitialized = true;
         window.webxdc.sendUpdate({payload: { "update-api-test": "bar"}}, "test update");
     })
 });
