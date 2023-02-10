@@ -20,7 +20,7 @@ window.addEventListener("load", () => {
         if (!updatesInitialized) {
             previousUpdates++;
         } else {
-            currentUpdates++
+            currentUpdates++;
             document.getElementById("updates-error").style.display = "none";
             document.getElementById("updates-ok").style.display = "inline";
         }
