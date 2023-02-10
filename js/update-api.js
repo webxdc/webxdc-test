@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
 
     window.webxdc.setUpdateListener(function (update) {
         if (!updatesInitialized) {
-            previousUpdates++
+            previousUpdates++;
         } else {
             currentUpdates++
             document.getElementById("updates-error").style.display = "none";
