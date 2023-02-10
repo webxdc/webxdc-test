@@ -1,8 +1,8 @@
 window.addEventListener("load", () => {
 
-    var updatesInitialized = false
-    var previousUpdates = 0
-    var currentUpdates = 0
+    var updatesInitialized = false;
+    var previousUpdates = 0;
+    var currentUpdates = 0;
 
     document.getElementById("update-api-output").append(
         createHeader("Webxdc Updates"),
