@@ -28,6 +28,6 @@ window.addEventListener("load", () => {
         document.getElementById("current-run").innerHTML = currentUpdates;
     }).then(() => {
         updatesInitialized = true
-        window.webxdc.sendUpdate({payload: { foo: "bar"}}, "test update");
+        window.webxdc.sendUpdate({payload: { "update-api-test": "bar"}}, "test update");
     })
 });
