@@ -51,6 +51,9 @@ window.webxdc = (() => {
             console.log('[Webxdc] description="' + description + '", ' + JSON.stringify(_update));
             updateListener(_update);
         },
+        sendMessage(payload) {
+            console.log('[Webxdc] blob="' + payload.blob + '", fileName="' + payload.fileName + '", text=' + payload.text);
+        }
     };
 })();
 
