@@ -51,6 +51,9 @@ window.webxdc = (() => {
             console.log('[Webxdc] description="' + description + '", ' + JSON.stringify(_update));
             updateListener(_update);
         },
+        sendToChat: (content) => {
+            console.log('[Webxdc] blob="' + content.blob + '", type="' + content.type + '", name="' + content.name + '", text=' + content.text);
+        },
     };
 })();
 
