@@ -13,7 +13,7 @@ function setInpPrev(event) {
 
 window.addEventListener("load", () => {
     document.getElementById("uploads-output").append(
-        createHeader("Uploads"),
+        createHeader("Uploads/Import"),
         h("div", {class: "container"},
           h('input', {id: "imgInp", type: "file", accept: "image/*", onchange: "setInpPrev(event)"}),
           h("br"), h("br"),
