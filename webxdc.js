@@ -51,8 +51,24 @@ window.webxdc = (() => {
             console.log('[Webxdc] description="' + description + '", ' + JSON.stringify(_update));
             updateListener(_update);
         },
-        sendToChat: (content) => {
-            console.log('[Webxdc] blob="' + content.blob + '", type="' + content.type + '", name="' + content.name + '", text=' + content.text);
+        sendToChat: async (message) => {
+            const data = {};
+            if (!message.text && !message.file) {
+                return Promise.reject("Invalid empty message, at least one of text or file should be provided");
+            }
+            if (message.text) {
+                data.text = message.text;
+            }
+            if (message.file) {
+                let isString = value => typeof value === 'string' || value instanceof String;
+                if (!message.file.name || !isString(message.file.base64)) {
+                    return Promise.reject("provided file is invalid, you need to set both name and base64 content");
+                }
+                data.base64 = message.file.base64;
+                data.name = message.file.name;
+            }
+
+            console.log('[Webxdc] Successful call to sendToChat: base64="' + data.base64 + '", name=' + data.name + '", text=' + data.text);
         },
     };
 })();

@@ -1,17 +1,18 @@
-function sendToChat(blob, text) {
+function sendToChat(file, text) {
     var data = {};
-    if (blob) {
-        data.file = new File(["BEGIN:VCALENDAR\n"], "event.ics", {
-		    type: "text/calendar",
-	    });
+    if (file) {
+        data.file = {
+            base64: window.btoa("hello world!"),
+            name: "example.txt",
+        }
         if (text) {
-            data.text = "Calendar events!";
+            data.text = "Text and attachment!";
         }
     } else if (text) {
         data.text = "Text without attachment!";
     }
 
-    window.webxdc.sendToChat(data);
+    window.webxdc.sendToChat(data).then(undefined, (error) => {console.log(error)});
 }
 
 window.addEventListener("load", () => {
