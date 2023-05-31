@@ -1,4 +1,5 @@
 function sendToChat(file, text) {
+    document.getElementById("promise-state").innerText = "Waiting for promise ...";
     var data = {};
     if (file) {
         data.file = {
@@ -12,9 +13,10 @@ function sendToChat(file, text) {
         data.text = "Text without attachment!";
     }
 
-    window.webxdc.sendToChat(data).catch((error) => {
-        console.log(error)
-        document.getElementById("send-rejected").innerText = "Promise rejected: " + error;
+    window.webxdc.sendToChat(data).then(() => {
+        document.getElementById("promise-state").innerText = "Promise resolved.";
+    }, (error) => {
+        document.getElementById("promise-state").innerText = "Promise rejected: " + error;
     });
 }
 
@@ -28,6 +30,6 @@ window.addEventListener("load", () => {
         h("li", {}, h("button", {onclick: "sendToChat(false, false);"}, "Send To Chat (error: no file, no text)")),
     );
     container.append(ul);
-    container.append(h("div", {id: "send-rejected", class: "red"}, ""));
+    container.append(h("div", {id: "promise-state"}, ""));
     document.getElementById("import-export-output").append(createHeader("webxdc.sendToChat()"), container);
 });
