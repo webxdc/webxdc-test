@@ -14,6 +14,7 @@ function sendToChat(file, text) {
 
     window.webxdc.sendToChat(data).catch((error) => {
         console.log(error)
+        document.getElementById("send-rejected").innerText = "Promise rejected: " + error;
     });
 }
 
@@ -27,5 +28,6 @@ window.addEventListener("load", () => {
         h("li", {}, h("button", {onclick: "sendToChat(false, false);"}, "Send To Chat (error: no file, no text)")),
     );
     container.append(ul);
+    container.append(h("div", {id: "send-rejected", class: "red"}, ""));
     document.getElementById("import-export-output").append(createHeader("webxdc.sendToChat()"), container);
 });
