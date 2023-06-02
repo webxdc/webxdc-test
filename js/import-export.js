@@ -3,8 +3,14 @@ function sendToChat(file, text) {
     var data = {};
     if (file) {
         data.file = {
-            base64: window.btoa("hello world!"),
             name: "example.txt",
+        }
+        if (file === 1) {
+            data.file.base64 = btoa("hello world!"); // warning: btoa shouldn't be used with non-binary strings, used here for simplicity.
+        } else if (file === 2) {
+            data.file.blob = new Blob(["hello world!"]);
+        } else if (file === 3) {
+            data.file.plainText = "hello world!";
         }
         if (text) {
             data.text = "Text and attachment!";
@@ -22,12 +28,16 @@ function sendToChat(file, text) {
 
 window.addEventListener("load", () => {
     let container = h("div", {class: "container"});
-    let ul = h("ul");
+    let ul = h("ul", {style: "list-style-type: none;"});
     ul.append(
-        h("li", {}, h("button", {onclick: "sendToChat(true, true);"}, "Send To Chat (file + text)")),
-        h("li", {}, h("button", {onclick: "sendToChat(true, false);"}, "Send To Chat (file only)")),
-        h("li", {}, h("button", {onclick: "sendToChat(false, true);"}, "Send To Chat (text only)")),
-        h("li", {}, h("button", {onclick: "sendToChat(false, false);"}, "Send To Chat (error: no file, no text)")),
+        h("li", {}, h("button", {onclick: "sendToChat(1, true);"}, "Send To Chat (base64, file+text)")),
+        h("li", {}, h("button", {onclick: "sendToChat(2, true);"}, "Send To Chat (blob, file+text)")),
+        h("li", {}, h("button", {onclick: "sendToChat(3, true);"}, "Send To Chat (plainText, file+text)")),
+
+        h("li", {}, h("button", {onclick: "sendToChat(1, false);"}, "Send To Chat (file only)")),
+        h("li", {}, h("button", {onclick: "sendToChat(0, true);"}, "Send To Chat (text only)")),
+        h("li", {}, h("button", {onclick: "sendToChat(0, false);"}, "Send To Chat (error: no file, no text)")),
+        h("li", {}, h("button", {onclick: "sendToChat(4, false);"}, "Send To Chat (error: invalid file)")),
     );
     container.append(ul);
     container.append(h("div", {id: "promise-state"}, ""));
