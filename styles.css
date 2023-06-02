@@ -34,3 +34,11 @@ button {
     padding: 0.5em;
     margin: 0.3em;
 }
+
+.wasm-support-dot {
+    width: 1em;
+    height: 1em;
+    border-radius: 100%;
+    display: inline-block;
+    margin-right: 4px;
+}
