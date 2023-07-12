@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>test webxdc - duplicated updates race test</title>
+    <script src="webxdc.js"></script>
+  </head>
+  <body>
+    <a href="./index.html">&lt; Back</a>
+
+    <h1>Duplicated Updates Race Test</h1>
+    <p>
+      At the time of writing this test desktop has a bug that each update causes
+      sending all new update from the update's serial onwards, which results in
+      updates getting processed multiple times, which can confuse your webxdc
+      app if it does not account for it.
+      <br /><br />Read More deltachat-desktop#3296
+    </p>
+
+    <div id="updates" style="max-height: 50vh; overflow-y: scroll"></div>
+
+    <script>
+      const updatesDiv = document.getElementById("updates");
+      let known_ids = [];
+      let batch = [];
+      let active = false;
+      window.webxdc.setUpdateListener((update) => {
+        batch.push(update.serial);
+
+        if (!known_ids.includes(update.serial)) {
+          known_ids.push(update.serial);
+        } else {
+          const note = document.createElement("div");
+          note.innerText = `(Processing duplicated update ${update.serial})`;
+          updatesDiv.appendChild(note);
+        }
+
+        if (update.serial === update.max_serial) {
+          if (active) {
+            const updateBatch = document.createElement("div");
+            updateBatch.innerText = `[${batch.join(",")}]`;
+            updatesDiv.appendChild(updateBatch);
+          }
+          batch = [];
+          updatesDiv.scrollTop = updatesDiv.scrollHeight;
+        }
+      }, 0);
+      function try_to_trigger_update_race() {
+        active = true;
+        window.webxdc.sendUpdate({ payload: "race test" }, "race test");
+        window.webxdc.sendUpdate({ payload: "race test" }, "race test");
+        window.webxdc.sendUpdate({ payload: "race test" }, "race test");
+      }
+    </script>
+    <button onclick="try_to_trigger_update_race()">
+      Try to trigger update race
+    </button>
+  </body>
+</html>
