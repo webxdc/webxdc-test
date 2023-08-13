@@ -37,7 +37,9 @@ window.addEventListener("load", async () => {
 
         return true;
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(e);
+    }
     return false;
   })();
 
