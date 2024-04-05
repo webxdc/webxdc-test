@@ -1,3 +1,3 @@
 name = "Test Webxdc"
-internet_access = true
+request_internet_access = true
 source_code_url = "https://github.com/webxdc/webxdc-test"
