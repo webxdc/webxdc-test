@@ -8,8 +8,12 @@ window.addEventListener("load", () => {
         h("li", {}, h("a", {href: "./page.html"}, "Link to an internal HTML page")),
         h("li", {}, h("a", {href: "chrome://crash"}, "chrome://crash")),
     );
+    const ifrmExplain = h("p", {}, "If this app was sent in the Saved Messages chat, due to request_internet_access set in manifest, the next iframe should load https://delta.chat from Internet:");
+    const ifrm = h("iframe", {src: "https://delta.chat"});
+    ifrm.style.width = "100%";
+    ifrm.style.height = "auto";
 
     document.getElementById("links-output").append(
-        createHeader("Links"), h("div", {class: "container"}, ul)
+        createHeader("Links"), h("div", {class: "container"}, ul, ifrmExplain, ifrm)
     );
 });
