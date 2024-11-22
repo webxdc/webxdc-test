@@ -43,6 +43,17 @@
         <div class="card" id="wasm-output"></div>
         <script src="js/wasm.js"></script>
 
+        <script src="js/media-access.js"></script>
+        <div class="card" id="camera-access">
+            <header class="container">
+                <h2>Media access</h2>
+            </header>
+            <div class="container">
+                <button style="padding: 10px;margin: 10px;" onClick="askForMediaAccess()">Check Camera access</button>
+                <video style="display: none;" id="camera-video" width="640" height="480" autoplay></video>
+            </div>
+        </div>
+
         <iframe id="iframe-regular" style="display: none"></iframe>
         <iframe id="iframe-allow-same-origin" sandbox="allow-same-origin" style="display: none"></iframe>
         <div class="card" id="webrtc-output"></div>
