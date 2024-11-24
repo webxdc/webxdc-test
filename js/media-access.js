@@ -1,4 +1,11 @@
 window.addEventListener("load", () => {
+    document.getElementById("camera-access").append(
+        createHeader("Media Access"),
+        h("div", {class: "container"},
+          h("button", {style: "padding: 10px;margin: 10px;", onClick: "askForMediaAccess()"}, "Check Camera access"),
+          h("video", {style: "display: none;", id: "camera-video", width: "640", height: "480", autoplay: true}),
+         )
+    );
     window.askForMediaAccess = () => {
         navigator.permissions.query({name:'camera'}).then((result) => {
             const videoElement = document.getElementById('camera-video');
