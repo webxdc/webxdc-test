@@ -15,6 +15,9 @@
         <script src="js/utils.js"></script>
     </head>
     <body>
+        <div class="card" id="realtime-output"></div>
+        <script src="js/realtime.js"></script>
+
         <div class="card" id="cookies-output"></div>
         <script src="js/cookies.js"></script>
 
@@ -26,9 +29,6 @@
 
         <div class="card" id="import-export-output"></div>
         <script src="js/import-export.js"></script>
-
-        <div class="card" id="links-output"></div>
-        <script src="js/links.js"></script>
 
         <div class="card" id="unload-output"></div>
         <script src="js/unload.js"></script>
@@ -45,6 +45,9 @@
         <div class="card" id="wasm-output"></div>
         <script src="js/wasm.js"></script>
 
+        <div class="card" id="camera-access"></div>
+        <script src="js/media-access.js"></script>
+
         <iframe id="iframe-regular" style="display: none"></iframe>
         <iframe id="iframe-allow-same-origin" sandbox="allow-same-origin" style="display: none"></iframe>
         <div class="card" id="webrtc-output"></div>
@@ -59,5 +62,8 @@
                 </a>
             </div>
         </div>
+
+        <div class="card" id="links-output"></div>
+        <script src="js/links.js"></script>
     </body>
 </html>
