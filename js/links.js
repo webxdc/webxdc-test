@@ -8,6 +8,25 @@ window.addEventListener("load", () => {
         h("li", {}, h("a", {href: "./page.html"}, "Link to an internal HTML page")),
         h("li", {}, h("a", {href: "chrome://crash"}, "chrome://crash")),
     );
+
+  let btn = h("button", {}, "notify (via info message) with deep-link to internal page");
+    btn.onclick = () => {
+        window.webxdc.sendUpdate({ payload: "",  info: "click me to open ./page.html directly", href: "./page.html", notify:["all", window.webxdc.selfAddr]}, "");
+    };
+    ul.append(h("li", {}, btn));
+
+  let btn = h("button", {}, "notify (via summary) with deep-link to internal page");
+    btn.onclick = () => {
+        window.webxdc.sendUpdate({ payload: "",  info: "click me to open ./page.html directly", href: "./page.html", notify:["all", window.webxdc.selfAddr]}, "");
+    };
+    ul.append(h("li", {}, btn));
+
+    btn = h("button", {}, "send info message with deep-link to #links-output section");
+    btn.onclick = () => {
+        window.webxdc.sendUpdate({ payload: "",  info: "click me to open #links-output directly", href: "#links-output"}, "");
+    };
+    ul.append(h("li", {}, btn));
+
     const ifrmExplain = h("p", {}, "If this app was sent in the Saved Messages chat, due to request_internet_access set in manifest, the next iframe should load https://delta.chat from Internet:");
     const ifrm = h("iframe", {src: "https://delta.chat"});
     ifrm.style.width = "100%";
