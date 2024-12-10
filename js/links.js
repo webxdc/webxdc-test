@@ -9,23 +9,23 @@ window.addEventListener("load", () => {
         h("li", {}, h("a", {href: "chrome://crash"}, "chrome://crash")),
     );
 
-  let btn = h("button", {}, "notify (via info message) with deep-link to internal page");
-    btn.onclick = () => {
+    let btn1 = h("button", {}, "notify (via info message) with deep-link to internal page");
+    btn1.onclick = () => {
         window.webxdc.sendUpdate({ payload: "",  info: "click me to open ./page.html directly", href: "./page.html", notify:["all", window.webxdc.selfAddr]}, "");
     };
-    ul.append(h("li", {}, btn));
+    ul.append(h("li", {}, btn1));
 
-  let btn = h("button", {}, "notify (via summary) with deep-link to internal page");
-    btn.onclick = () => {
+    let btn2 = h("button", {}, "notify (via summary) with deep-link to internal page");
+    btn2.onclick = () => {
         window.webxdc.sendUpdate({ payload: "",  info: "click me to open ./page.html directly", href: "./page.html", notify:["all", window.webxdc.selfAddr]}, "");
     };
-    ul.append(h("li", {}, btn));
+    ul.append(h("li", {}, btn2));
 
-    btn = h("button", {}, "send info message with deep-link to #links-output section");
-    btn.onclick = () => {
+    let btn3 = h("button", {}, "send info message with deep-link to #links-output section");
+    btn3.onclick = () => {
         window.webxdc.sendUpdate({ payload: "",  info: "click me to open #links-output directly", href: "#links-output"}, "");
     };
-    ul.append(h("li", {}, btn));
+    ul.append(h("li", {}, btn3));
 
     const ifrmExplain = h("p", {}, "If this app was sent in the Saved Messages chat, due to request_internet_access set in manifest, the next iframe should load https://delta.chat from Internet:");
     const ifrm = h("iframe", {src: "https://delta.chat"});
