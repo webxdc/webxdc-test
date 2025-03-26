@@ -59,6 +59,62 @@
         <script src="js/webrtc.js"></script>
         <iframe src="./iframe-webrtc-test.html" sandbox="allow-scripts" width="100%" height="200"></iframe>
 
+        <!-- DNS prefetch check, originally developed by Cure53
+        and distributed as "Cure53 Test App - DNS checker" app.
+        See https://delta.chat/en/2023-05-22-webxdc-security#dns-prefetching-marks-another-exploit. -->
+        <div class="dns-prefetch-output">
+            <header class="container">
+                <h2>DNS Prefetch</h2>
+            </header>
+            <div class="container">
+                <section>
+                    <p>Usage instructions:</p>
+                    <ol>
+                        <li>
+                            Navigate to
+                            <a href="https://dig.pm/">https://dig.pm/</a>
+                            and click Get Sub Domain.
+                        </li>
+                        <li>Input the subdomain from Step 1.</li>
+                        <li>Click all 3 of the buttons.</li>
+                        <li>Click Get Results on https://dig.pm/.</li>
+                        <li>Observe the DNS lookup record.</li>
+                    </ol>
+                    <p>
+                        Also see
+                        <a href="https://public.opentech.fund/documents/XDC-01-report_2_1.pdf">the audit</a>
+                        and
+                        <a href="https://delta.chat/en/2023-05-22-webxdc-security">the blog post</a>.
+                    </p>
+                </section>
+                <p>You can also utilize Wireshark, then https://dig.pm/ is not needed.</p>
+                <input
+                    id="dns-prefetch-domain-input"
+                    type="text"
+                    placeholder="abc.example.com"
+                    required
+                />
+                <br>
+                <button
+                    type="button"
+                    onclick="dnsPrefetchUpdateLocation()"
+                >Update top.location</button>
+                <br>
+                <button
+                    type="button"
+                    onclick="dnsPrefetchAddIframe()"
+                >Add iframe</button>
+                <br>
+                <button
+                    type="button"
+                    onclick="dnsPrefetchAddPrefetch()"
+                >Add &lt;link dns-prefetch&gt;</button>
+                <br>
+                <iframe id="dns-prefetch-frame"></iframe>
+            </div>
+        </div>
+        <script src="js/dns-prefetch.js"></script>
+
         <div class="card">
             <header class="container"><h2>Webxdc Status Update Tests</h2></header>
             <div class="container">
