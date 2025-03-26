@@ -23,7 +23,17 @@ function tryIceLeak(RTCPeerConnectionClass) {
                     { urls: ['stun:stun.l.google.com:19302'] },
                     // stun.l.google.com, but by IP, in case DNS doesn't work.
                     { urls: ['stun:173.194.76.127:19302'] },
-                    { urls: ['stun:stun.voipgate.com:3478'] }
+                    { urls: ['stun:stun.voipgate.com:3478'] },
+                    // This will not generate candidates,
+                    // because it's not a TURN server.
+                    // But this helps see e.g. with Wireshark
+                    // whether the browser will attempt to gather
+                    // relay (TURN) candidates.
+                    {
+                        urls: ['turn:173.194.76.127:19302'],
+                        username: 'foo',
+                        credential: 'bar',
+                    },
                 ]
             });
             
