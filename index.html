@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Putting this inline and at the top level
+        so that it gets executed as early as possible.
+        Same in iframe-webrtc-test.html -->
+        <script>globalThis.__capturedWebRTCObj = RTCPeerConnection;</script>
+
         <meta charset="utf-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">

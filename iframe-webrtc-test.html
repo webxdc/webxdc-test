@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Putting this inline and at the top level
+        so that it gets executed as early as possible.
+        Same in index.html -->
+        <script>globalThis.__capturedWebRTCObj = RTCPeerConnection;</script>
+
         <meta charset="utf-8"/>
         <script src="js/utils.js"></script>
     </head>

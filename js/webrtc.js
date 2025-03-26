@@ -147,6 +147,11 @@ window.addEventListener("load", () => {
 
     document.getElementById("webrtc-output").append(
         createHeader("webrtc-sidechannel"),
+        h(
+            "p",
+            {},
+            "RTCPeerConnection object: " + globalThis.__capturedWebRTCObj,
+        ),
         h("div", {class: "container"},
             resultsHeader,
             ...elements
