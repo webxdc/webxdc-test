@@ -46,3 +46,47 @@ button {
     display: inline-block;
     margin-right: 4px;
 }
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.pages {
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.page {
+    margin: 10px;
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.tabs {
+    display: flex;
+    background-color: white;
+    border-top: 1px solid gainsboro;
+    align-items: center;
+}
+
+.tab {
+    flex-grow: 1;
+    height: 36px;
+    font-size: 1.3em;
+    text-align: center;
+    align-content: center;
+}
+
+.tab.active {
+    background-color: lightgrey;
+}
