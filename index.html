@@ -44,8 +44,8 @@
           </div>
         </div>
 
-        <div class="card" id="links-output"></div>
-        <script src="js/links.js"></script>
+        <div class="card" id="webxdc-notify-output"></div>
+        <script src="js/webxdc-notify.js"></script>
 
         <div class="card" id="info-output"></div>
         <script src="js/info.js"></script>
@@ -63,6 +63,9 @@
 
         <div class="card" id="wasm-output"></div>
         <script src="js/wasm.js"></script>
+
+        <div class="card" id="links-output"></div>
+        <script src="js/links.js"></script>
       </div>
       <div class="page" id="page-sandbox">
         <div class="card" id="cookies-output"></div>
@@ -77,18 +80,26 @@
           style="display: none"
         ></iframe>
         <div class="card" id="webrtc-output"></div>
-        <script src="js/webrtc.js"></script>
-        <iframe
-          src="./iframe-webrtc-test.html"
-          sandbox="allow-scripts"
-          width="100%"
-          height="200"
-        ></iframe>
+        <div class="card">
+          <header class="container">
+            <h2>webrtc-sidechannel iframe</h2>
+          </header>
+          <script src="js/webrtc.js"></script>
+          <iframe
+            src="./iframe-webrtc-test.html"
+            sandbox="allow-scripts"
+            width="100%"
+            height="200"
+          ></iframe>
+        </div>
+
+        <div class="card" id="iframe-output"></div>
+        <script src="js/iframe.js"></script>
 
         <!-- DNS prefetch check, originally developed by Cure53
             and distributed as "Cure53 Test App - DNS checker" app.
             See https://delta.chat/en/2023-05-22-webxdc-security#dns-prefetching-marks-another-exploit. -->
-        <div class="dns-prefetch-output">
+        <div class="card dns-prefetch-output">
           <header class="container">
             <h2>DNS Prefetch</h2>
           </header>
@@ -167,15 +178,15 @@
           tab: document.getElementById("tab-sandbox"),
         },
       ];
-      for (const {page, tab} of tabs) {
+      for (const { page, tab } of tabs) {
         tab.onclick = () => {
-            tabs.forEach(({page, tab}) => {
-                page.classList.remove("active")
-                tab.classList.remove("active")
-            });
-            page.classList.add("active")
-            tab.classList.add("active")
-        }
+          tabs.forEach(({ page, tab }) => {
+            page.classList.remove("active");
+            tab.classList.remove("active");
+          });
+          page.classList.add("active");
+          tab.classList.add("active");
+        };
       }
     </script>
   </body>
