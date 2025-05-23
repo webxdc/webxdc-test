@@ -72,10 +72,47 @@ function testIndexedDB(output) {
     }
 }
 
+/**
+ * @param {HTMLElement} output
+ */
+async function testCacheStorage(output) {
+    output.appendChild(h("h3", {}, "CacheStorage"));
+
+    const appendErr = (err) => {
+        output.append(h("strong", {class: "red"}, "WARNING: "), "CacheStorage is not supported." + err);
+    }
+    if (!globalThis.caches) {
+        appendErr(`globalThis.caches is ${globalThis.caches}`);
+        return;
+    }
+
+    try {
+        const cache = await caches.open("test-cache");
+        const key = 'test-url';
+        const res1 = await cache.match(key);
+        const initialValue = parseInt(
+            res1 != undefined ? await res1.text() : "0"
+        );
+        await cache.put(key, new Response(initialValue + 1));
+
+        const res2 = await cache.match(key);
+        if (res2 == undefined) {
+            appendErr('Failed to fetch the value that we just stored');
+        }
+        const retreived2 = await res2.text()
+
+        output.append("Counter: ", h("span", {}, retreived2));
+    } catch (err) {
+        appendErr(err);
+        return;
+    }
+}
+
 window.addEventListener("load", () => {
     let div = h("div", {class: "container"});
     testStorage(div, "localStorage");
     testStorage(div, "sessionStorage");
     testIndexedDB(div);
+    testCacheStorage(div);
     document.getElementById("storage-output").append(createHeader("Storage"), div);
 });
