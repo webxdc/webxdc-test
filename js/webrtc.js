@@ -97,7 +97,10 @@ window.addEventListener("load", () => {
     const iframeRegularWindow = iframeRegularEl?.contentWindow;
     /** @type {HTMLIFrameElement} */
     const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
-    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
+    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow?.window;
+    const iframeRegularElDoc = iframeRegularEl.contentDocument
+    iframeRegularElDoc.body.innerHTML += "<iframe id=i></iframe>"
+    const iframeNotInitedWindow = iframeRegularElDoc?.getElementById("i").contentWindow.window;
     const tests = [
         ["RTCPeerConnection", window.RTCPeerConnection],
         ["mozRTCPeerConnection", window.mozRTCPeerConnection],
@@ -108,6 +111,9 @@ window.addEventListener("load", () => {
         ["iframe regular RTCPeerConnection", iframeRegularWindow?.RTCPeerConnection],
         ["iframe regular mozRTCPeerConnection", iframeRegularWindow?.mozRTCPeerConnection],
         ["iframe regular webkitRTCPeerConnection", iframeRegularWindow?.webkitRTCPeerConnection],
+        ["iframe regular uninitialized RTCPeerConnection", iframeNotInitedWindow?.RTCPeerConnection],
+        ["iframe regular uninitialized mozRTCPeerConnection", iframeNotInitedWindow?.mozRTCPeerConnection],
+        ["iframe regular uninitialized webkitRTCPeerConnection", iframeNotInitedWindow?.webkitRTCPeerConnection],
     ];
     const elements = [];
     const testPromises = [];
