@@ -36,7 +36,7 @@ function tryIceLeak(RTCPeerConnectionClass) {
                     },
                 ]
             });
-            
+
             /**
              * @param {RTCIceCandidate} candidate
              */
@@ -77,7 +77,7 @@ function tryIceLeak(RTCPeerConnectionClass) {
 
             // So that an offer is actually generated.
             pc.createDataChannel('dummyName');
-            
+
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
         } catch (error) {
@@ -97,10 +97,14 @@ window.addEventListener("load", () => {
     const iframeRegularWindow = iframeRegularEl?.contentWindow;
     /** @type {HTMLIFrameElement} */
     const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
-    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow?.window;
-    const iframeRegularElDoc = iframeRegularEl.contentDocument
-    iframeRegularElDoc.body.innerHTML += "<iframe id=i></iframe>"
-    const iframeNotInitedWindow = iframeRegularElDoc?.getElementById("i").contentWindow.window;
+    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
+    const iframeContainer = document.getElementById("iframe-container");
+    /** @type {Window | undefined} */
+    let iframeNotInitedWindow
+    if (iframeContainer) {
+        iframeContainer.innerHTML += "<iframe id=uninitiframe></iframe>"
+        iframeNotInitedWindow = uninitiframe.contentWindow;
+    }
     const tests = [
         ["RTCPeerConnection", window.RTCPeerConnection],
         ["mozRTCPeerConnection", window.mozRTCPeerConnection],
@@ -168,7 +172,7 @@ window.addEventListener("load", () => {
             {},
             "RTCPeerConnection object: " + globalThis.__capturedWebRTCObj,
         ),
-        h("div", {class: "container"},
+        h("div", { class: "container" },
             resultsHeader,
             ...elements
         )
