@@ -74,7 +74,7 @@ function tryIceLeak(RTCPeerConnectionClass) {
                     return resolveConnected(e.candidate);
                 }
             });
-
+            
             // So that an offer is actually generated.
             pc.createDataChannel('dummyName');
 
@@ -98,6 +98,13 @@ window.addEventListener("load", () => {
     /** @type {HTMLIFrameElement} */
     const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
     const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
+    // This test is specifically designed to get the RTCPeerConnection object
+    // before the injected script on android is run.
+    // The script injected into Android's WebView from Tauri
+    // only runs once the page is loaded, compared to other targets
+    // where the injected script is run immediately
+    // after the iframe is constructed, before yeilding back to the JS
+    // on the parent page which created the iframe.
     const iframeContainer = document.getElementById("iframe-container");
     /** @type {Window | undefined} */
     let iframeNotInitedWindow
@@ -172,7 +179,7 @@ window.addEventListener("load", () => {
             {},
             "RTCPeerConnection object: " + globalThis.__capturedWebRTCObj,
         ),
-        h("div", { class: "container" },
+        h("div", {class: "container"},
             resultsHeader,
             ...elements
         )
