@@ -74,7 +74,7 @@ function tryIceLeak(RTCPeerConnectionClass) {
                     return resolveConnected(e.candidate);
                 }
             });
-            
+
             // So that an offer is actually generated.
             pc.createDataChannel('dummyName');
             
