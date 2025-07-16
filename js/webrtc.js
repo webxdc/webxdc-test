@@ -77,7 +77,7 @@ function tryIceLeak(RTCPeerConnectionClass) {
             
             // So that an offer is actually generated.
             pc.createDataChannel('dummyName');
-
+            
             const offer = await pc.createOffer();
             await pc.setLocalDescription(offer);
         } catch (error) {
