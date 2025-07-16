@@ -36,7 +36,7 @@ function tryIceLeak(RTCPeerConnectionClass) {
                     },
                 ]
             });
-
+            
             /**
              * @param {RTCIceCandidate} candidate
              */
