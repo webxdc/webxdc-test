@@ -25,7 +25,12 @@
   </head>
   <body>
     <div class="pages">
-      <div class="page active" id="page-webxdc">
+      <div
+        class="page active"
+        id="page-webxdc"
+        role="tabpanel"
+        aria-labelledby="tab-webxdc"
+      >
         <div class="card" id="realtime-output"></div>
         <script src="js/realtime.js"></script>
         <div class="card" id="uploads-output"></div>
@@ -50,7 +55,12 @@
         <div class="card" id="info-output"></div>
         <script src="js/info.js"></script>
       </div>
-      <div class="page" id="page-web-api">
+      <div
+        class="page"
+        id="page-web-api"
+        role="tabpanel"
+        aria-labelledby="tab-web-api"
+      >
         <div class="card" id="storage-output"></div>
         <script src="js/storage.js"></script>
         <div class="card" id="unload-output"></div>
@@ -67,7 +77,12 @@
         <div class="card" id="links-output"></div>
         <script src="js/links.js"></script>
       </div>
-      <div class="page" id="page-sandbox">
+      <div
+        class="page"
+        id="page-sandbox"
+        role="tabpanel"
+        aria-labelledby="tab-sandbox"
+      >
         <div class="card" id="cookies-output"></div>
         <script src="js/cookies.js"></script>
         <div class="card" id="camera-access"></div>
@@ -158,10 +173,34 @@
         <script src="js/dns-prefetch.js"></script>
       </div>
     </div>
-    <div class="tabs">
-      <div class="tab active" id="tab-webxdc">Webxdc</div>
-      <div class="tab" id="tab-web-api">Web API</div>
-      <div class="tab" id="tab-sandbox">Sandboxing</div>
+    <div class="tabs" role="tablist" aria-orientation="horizontal">
+      <button
+        role="tab"
+        aria-controls="page-webxdc"
+        class="tab"
+        aria-selected="true"
+        id="tab-webxdc"
+      >
+        Webxdc
+      </button>
+      <button
+        role="tab"
+        aria-controls="page-web-api"
+        aria-selected="false"
+        class="tab"
+        id="tab-web-api"
+      >
+        Web API
+      </button>
+      <button
+        role="tab"
+        aria-controls="page-sandbox"
+        aria-selected="false"
+        class="tab"
+        id="tab-sandbox"
+      >
+        Sandboxing
+      </button>
     </div>
     <script>
       var tabs = [
@@ -182,10 +221,10 @@
         tab.onclick = () => {
           tabs.forEach(({ page, tab }) => {
             page.classList.remove("active");
-            tab.classList.remove("active");
+            tab.ariaSelected = false;
           });
           page.classList.add("active");
-          tab.classList.add("active");
+          tab.ariaSelected = true;
         };
       }
     </script>
