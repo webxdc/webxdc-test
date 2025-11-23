@@ -98,6 +98,20 @@ window.addEventListener("load", () => {
     /** @type {HTMLIFrameElement} */
     const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
     const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
+    // This test is specifically designed to get the RTCPeerConnection object
+    // before the injected script on android is run.
+    // The script injected into Android's WebView from Tauri
+    // only runs once the page is loaded, compared to other targets
+    // where the injected script is run immediately
+    // after the iframe is constructed, before yeilding back to the JS
+    // on the parent page which created the iframe.
+    const iframeContainer = document.getElementById("iframe-container");
+    /** @type {Window | undefined} */
+    let iframeNotInitedWindow
+    if (iframeContainer) {
+        iframeContainer.innerHTML += "<iframe id=uninitiframe></iframe>"
+        iframeNotInitedWindow = uninitiframe.contentWindow;
+    }
     const tests = [
         ["RTCPeerConnection", window.RTCPeerConnection],
         ["mozRTCPeerConnection", window.mozRTCPeerConnection],
@@ -108,6 +122,9 @@ window.addEventListener("load", () => {
         ["iframe regular RTCPeerConnection", iframeRegularWindow?.RTCPeerConnection],
         ["iframe regular mozRTCPeerConnection", iframeRegularWindow?.mozRTCPeerConnection],
         ["iframe regular webkitRTCPeerConnection", iframeRegularWindow?.webkitRTCPeerConnection],
+        ["iframe regular uninitialized RTCPeerConnection", iframeNotInitedWindow?.RTCPeerConnection],
+        ["iframe regular uninitialized mozRTCPeerConnection", iframeNotInitedWindow?.mozRTCPeerConnection],
+        ["iframe regular uninitialized webkitRTCPeerConnection", iframeNotInitedWindow?.webkitRTCPeerConnection],
     ];
     const elements = [];
     const testPromises = [];
