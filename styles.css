@@ -25,6 +25,10 @@ header {
     color: red;
 }
 
+.green {
+    color: green;
+}
+
 .card {
     box-shadow:0 2px 4px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
     margin-bottom: 15px;
@@ -41,4 +45,52 @@ button {
     border-radius: 100%;
     display: inline-block;
     margin-right: 4px;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.pages {
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.page {
+    margin: 10px;
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+.tabs {
+    display: flex;
+    background-color: white;
+    border-top: 1px solid gainsboro;
+    align-items: center;
+}
+
+.tab {
+    flex-grow: 1;
+    height: 36px;
+    padding: 0;
+    border: none;
+    margin: 0;
+    background-color: transparent;
+    font-size: 1.3em;
+    text-align: center;
+    align-content: center;
+}
+
+.tab[aria-selected="true"] {
+    background-color: lightgrey;
 }

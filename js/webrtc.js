@@ -23,7 +23,17 @@ function tryIceLeak(RTCPeerConnectionClass) {
                     { urls: ['stun:stun.l.google.com:19302'] },
                     // stun.l.google.com, but by IP, in case DNS doesn't work.
                     { urls: ['stun:173.194.76.127:19302'] },
-                    { urls: ['stun:stun.voipgate.com:3478'] }
+                    { urls: ['stun:stun.voipgate.com:3478'] },
+                    // This will not generate candidates,
+                    // because it's not a TURN server.
+                    // But this helps see e.g. with Wireshark
+                    // whether the browser will attempt to gather
+                    // relay (TURN) candidates.
+                    {
+                        urls: ['turn:173.194.76.127:19302'],
+                        username: 'foo',
+                        credential: 'bar',
+                    },
                 ]
             });
             
@@ -88,6 +98,20 @@ window.addEventListener("load", () => {
     /** @type {HTMLIFrameElement} */
     const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
     const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
+    // This test is specifically designed to get the RTCPeerConnection object
+    // before the injected script on android is run.
+    // The script injected into Android's WebView from Tauri
+    // only runs once the page is loaded, compared to other targets
+    // where the injected script is run immediately
+    // after the iframe is constructed, before yeilding back to the JS
+    // on the parent page which created the iframe.
+    const iframeContainer = document.getElementById("iframe-container");
+    /** @type {Window | undefined} */
+    let iframeNotInitedWindow
+    if (iframeContainer) {
+        iframeContainer.innerHTML += "<iframe id=uninitiframe></iframe>"
+        iframeNotInitedWindow = uninitiframe.contentWindow;
+    }
     const tests = [
         ["RTCPeerConnection", window.RTCPeerConnection],
         ["mozRTCPeerConnection", window.mozRTCPeerConnection],
@@ -98,6 +122,9 @@ window.addEventListener("load", () => {
         ["iframe regular RTCPeerConnection", iframeRegularWindow?.RTCPeerConnection],
         ["iframe regular mozRTCPeerConnection", iframeRegularWindow?.mozRTCPeerConnection],
         ["iframe regular webkitRTCPeerConnection", iframeRegularWindow?.webkitRTCPeerConnection],
+        ["iframe regular uninitialized RTCPeerConnection", iframeNotInitedWindow?.RTCPeerConnection],
+        ["iframe regular uninitialized mozRTCPeerConnection", iframeNotInitedWindow?.mozRTCPeerConnection],
+        ["iframe regular uninitialized webkitRTCPeerConnection", iframeNotInitedWindow?.webkitRTCPeerConnection],
     ];
     const elements = [];
     const testPromises = [];
@@ -147,6 +174,11 @@ window.addEventListener("load", () => {
 
     document.getElementById("webrtc-output").append(
         createHeader("webrtc-sidechannel"),
+        h(
+            "p",
+            {},
+            "RTCPeerConnection object: " + globalThis.__capturedWebRTCObj,
+        ),
         h("div", {class: "container"},
             resultsHeader,
             ...elements

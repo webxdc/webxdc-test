@@ -1,38 +1,72 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8"/>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <!-- Putting this inline and at the top level
+        so that it gets executed as early as possible.
+        Same in iframe-webrtc-test.html -->
+    <script>
+      globalThis.__capturedWebRTCObj = RTCPeerConnection;
+    </script>
 
-        <link rel="stylesheet" href="styles.css" />
-        <script src="webxdc.js"></script>
-        <script src="js/utils.js"></script>
-    </head>
-    <body>
-        <div class="card" id="cookies-output"></div>
-        <script src="js/cookies.js"></script>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <div class="card" id="storage-output"></div>
-        <script src="js/storage.js"></script>
+    <link rel="stylesheet" href="styles.css" />
 
+    <!-- debugging -->
+    <script src="js/eruda.min.js"></script>
+    <script>
+      eruda.init();
+    </script>
+
+    <script src="webxdc.js"></script>
+    <script src="js/utils.js"></script>
+  </head>
+  <body>
+    <div class="pages">
+      <div
+        class="page active"
+        id="page-webxdc"
+        role="tabpanel"
+        aria-labelledby="tab-webxdc"
+      >
+        <div class="card" id="realtime-output"></div>
+        <script src="js/realtime.js"></script>
         <div class="card" id="uploads-output"></div>
         <script src="js/uploads.js"></script>
-
         <div class="card" id="import-export-output"></div>
         <script src="js/import-export.js"></script>
-
-        <div class="card" id="links-output"></div>
-        <script src="js/links.js"></script>
-
-        <div class="card" id="unload-output"></div>
-        <script src="js/unload.js"></script>
-
-        <div class="card" id="navigator-output"></div>
-        <script src="js/navigator.js"></script>
-
         <div class="card" id="update-api-output"></div>
         <script src="js/update-api.js"></script>
+
+        <div class="card">
+          <header class="container"><h2>Webxdc Status Update Tests</h2></header>
+          <div class="container">
+            <a href="./duplicated_updates_race.html">
+              Duplicated Status Updates Race Test
+            </a>
+          </div>
+        </div>
+
+        <div class="card" id="webxdc-notify-output"></div>
+        <script src="js/webxdc-notify.js"></script>
+
+        <div class="card" id="info-output"></div>
+        <script src="js/info.js"></script>
+      </div>
+      <div
+        class="page"
+        id="page-web-api"
+        role="tabpanel"
+        aria-labelledby="tab-web-api"
+      >
+        <div class="card" id="storage-output"></div>
+        <script src="js/storage.js"></script>
+        <div class="card" id="unload-output"></div>
+        <script src="js/unload.js"></script>
+        <div class="card" id="navigator-output"></div>
+        <script src="js/navigator.js"></script>
 
         <div class="card" id="races-output"></div>
         <script src="js/races.js"></script>
@@ -40,23 +74,160 @@
         <div class="card" id="wasm-output"></div>
         <script src="js/wasm.js"></script>
 
-        <iframe id="iframe-regular" style="display: none"></iframe>
-        <iframe id="iframe-allow-same-origin" sandbox="allow-same-origin" style="display: none"></iframe>
-        <div class="card" id="webrtc-output"></div>
-        <script src="js/webrtc.js"></script>
-        <iframe src="./iframe-webrtc-test.html" sandbox="allow-scripts" width="100%" height="200"></iframe>
+        <div class="card" id="links-output"></div>
+        <script src="js/links.js"></script>
+      </div>
+      <div
+        class="page"
+        id="page-sandbox"
+        role="tabpanel"
+        aria-labelledby="tab-sandbox"
+      >
+        <div class="card" id="cookies-output"></div>
+        <script src="js/cookies.js"></script>
+        <div class="card" id="camera-access"></div>
+        <script src="js/media-access.js"></script>
 
+        <iframe id="iframe-regular" style="display: none"></iframe>
+        <div id="iframe-container" style="display: none"></div>
+        <iframe
+          id="iframe-allow-same-origin"
+          sandbox="allow-same-origin"
+          style="display: none"
+        ></iframe>
+        <div class="card" id="webrtc-output"></div>
         <div class="card">
-            <header class="container"><h2>Webxdc Status Update Tests</h2></header>
-            <div class="container">
-                <a href="./duplicated_updates_race.html">
-                    Duplicated Status Updates Race Test
-                </a>
-            </div>
+          <header class="container">
+            <h2>webrtc-sidechannel iframe</h2>
+          </header>
+          <script src="js/webrtc.js"></script>
+          <iframe
+            src="./iframe-webrtc-test.html"
+            sandbox="allow-scripts"
+            width="100%"
+            height="200"
+          ></iframe>
         </div>
 
-        <!-- debugging -->
-        <script src="js/eruda.min.js"></script>
-        <script>window.addEventListener("load", () => eruda.init());</script>
-    </body>
+        <div class="card" id="iframe-output"></div>
+        <script src="js/iframe.js"></script>
+
+        <!-- DNS prefetch check, originally developed by Cure53
+            and distributed as "Cure53 Test App - DNS checker" app.
+            See https://delta.chat/en/2023-05-22-webxdc-security#dns-prefetching-marks-another-exploit. -->
+        <div class="card dns-prefetch-output">
+          <header class="container">
+            <h2>DNS Prefetch</h2>
+          </header>
+          <div class="container">
+            <section>
+              <p>Usage instructions:</p>
+              <ol>
+                <li>
+                  Navigate to
+                  <a href="https://dig.pm/">https://dig.pm/</a>
+                  and click Get Sub Domain.
+                </li>
+                <li>Input the subdomain from Step 1.</li>
+                <li>Click all 3 of the buttons.</li>
+                <li>Click Get Results on https://dig.pm/.</li>
+                <li>Observe the DNS lookup record.</li>
+              </ol>
+              <p>
+                Also see
+                <a
+                  href="https://public.opentech.fund/documents/XDC-01-report_2_1.pdf"
+                  >the audit</a
+                >
+                and
+                <a href="https://delta.chat/en/2023-05-22-webxdc-security"
+                  >the blog post</a
+                >.
+              </p>
+            </section>
+            <p>
+              You can also utilize Wireshark, then https://dig.pm/ is not
+              needed.
+            </p>
+            <input
+              id="dns-prefetch-domain-input"
+              type="text"
+              placeholder="abc.example.com"
+              required
+            />
+            <br />
+            <button type="button" onclick="dnsPrefetchUpdateLocation()">
+              Update top.location
+            </button>
+            <br />
+            <button type="button" onclick="dnsPrefetchAddIframe()">
+              Add iframe
+            </button>
+            <br />
+            <button type="button" onclick="dnsPrefetchAddPrefetch()">
+              Add &lt;link dns-prefetch&gt;
+            </button>
+            <br />
+            <iframe id="dns-prefetch-frame"></iframe>
+          </div>
+        </div>
+        <script src="js/dns-prefetch.js"></script>
+      </div>
+    </div>
+    <div class="tabs" role="tablist" aria-orientation="horizontal">
+      <button
+        role="tab"
+        aria-controls="page-webxdc"
+        class="tab"
+        aria-selected="true"
+        id="tab-webxdc"
+      >
+        Webxdc
+      </button>
+      <button
+        role="tab"
+        aria-controls="page-web-api"
+        aria-selected="false"
+        class="tab"
+        id="tab-web-api"
+      >
+        Web API
+      </button>
+      <button
+        role="tab"
+        aria-controls="page-sandbox"
+        aria-selected="false"
+        class="tab"
+        id="tab-sandbox"
+      >
+        Sandboxing
+      </button>
+    </div>
+    <script>
+      var tabs = [
+        {
+          page: document.getElementById("page-webxdc"),
+          tab: document.getElementById("tab-webxdc"),
+        },
+        {
+          page: document.getElementById("page-web-api"),
+          tab: document.getElementById("tab-web-api"),
+        },
+        {
+          page: document.getElementById("page-sandbox"),
+          tab: document.getElementById("tab-sandbox"),
+        },
+      ];
+      for (const { page, tab } of tabs) {
+        tab.onclick = () => {
+          tabs.forEach(({ page, tab }) => {
+            page.classList.remove("active");
+            tab.ariaSelected = false;
+          });
+          page.classList.add("active");
+          tab.ariaSelected = true;
+        };
+      }
+    </script>
+  </body>
 </html>
