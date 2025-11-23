@@ -82,11 +82,15 @@ body {
 .tab {
     flex-grow: 1;
     height: 36px;
+    padding: 0;
+    border: none;
+    margin: 0;
+    background-color: transparent;
     font-size: 1.3em;
     text-align: center;
     align-content: center;
 }
 
-.tab.active {
+.tab[aria-selected="true"] {
     background-color: lightgrey;
 }
