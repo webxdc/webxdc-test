@@ -12,10 +12,22 @@ window.addEventListener("load", () => {
             h("a", {href: "cabal://cabal.chat"}, "Custom scheme link"),
             h("a", {href: "./page.html"}, "Link to an internal HTML page"),
             h("a", {href: "chrome://crash"}, "chrome://crash"),
-        ].map(el => h("div", {}, el))
+        ].map(el => h("div", {}, el, makeSpamButton(el)))
     );
 
     document.getElementById("links-output").append(
         createHeader("Links"), h("div", {class: "container"}, list)
     );
 });
+
+function makeSpamButton(elToSpam) {
+    const button = document.createElement("button")
+    button.innerText = "Spam"
+    button.onclick = () => {
+        const interval = setInterval(() => {
+            elToSpam.click()
+        }, 250)
+        setTimeout(() => clearInterval(interval), 5000)
+    }
+    return button
+}
