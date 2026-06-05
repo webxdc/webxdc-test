@@ -16,7 +16,19 @@ window.addEventListener("load", () => {
          )
     );
 
+    const updates = [];
+    const listeners = [];
+    globalThis.addUpdateListener = function (fn) {
+        for (const update of updates) {
+            fn(update)
+        }
+        listeners.push(fn)
+    }
+
     window.webxdc.setUpdateListener(function (update) {
+        updates.push(update);
+        listeners.forEach(fn => fn(update));
+
         if (!updatesInitialized) {
             previousUpdates++;
         } else {
@@ -26,8 +38,6 @@ window.addEventListener("load", () => {
         }
         document.getElementById("previous-runs").innerHTML = previousUpdates;
         document.getElementById("current-run").innerHTML = currentUpdates;
-
-        window.anotherWebxdcUpdateListener(update);
     }).then(() => {
         updatesInitialized = true;
         window.webxdc.sendUpdate({payload: { "update-api-test": "bar"}}, "test update");
