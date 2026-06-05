@@ -11,15 +11,6 @@ window.addEventListener("load", () => {
     for (const eventName of events) {
         eventNameToNumWebxdcUpdatesFromIt[eventName] = 0;
     }
-    window.anotherWebxdcUpdateListener = function (update) {
-        if (!update.payload?.isEventCounterUpdate) {
-            return;
-        }
-        const { eventName } = update.payload;
-        const newCount =
-            eventNameToNumWebxdcUpdatesFromIt[eventName] += 1;
-        updateWebxdcUpdatesFromListenerElement(eventName, newCount);
-    }
     events.forEach(eventName => {
         container.append(
             h("strong", {}, eventName), " triggered ", h("strong", {id: eventName + "-counter"}, getInt(`docEvent.${eventName}`)), " times",
@@ -46,6 +37,15 @@ window.addEventListener("load", () => {
             }, `${eventName} event counter`);
         });
     });
+    window.addUpdateListener(function (update) {
+        if (!update.payload?.isEventCounterUpdate) {
+            return;
+        }
+        const { eventName } = update.payload;
+        const newCount =
+            eventNameToNumWebxdcUpdatesFromIt[eventName] += 1;
+        updateWebxdcUpdatesFromListenerElement(eventName, newCount);
+    })
 
     function updateWebxdcUpdatesFromListenerElement(eventName, newWebxdcUpdateCount) {
         const el = document.getElementById(eventName + "-counter-sendUpdate");
