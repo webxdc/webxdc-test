@@ -93,11 +93,8 @@ window.addEventListener("load", () => {
     // https://docs.ipdata.co/docs/how-to-get-a-clients-ip-address-using-javascript
 
     /** @type {HTMLIFrameElement} */
-    const iframeRegularEl = document.getElementById('iframe-regular');
-    const iframeRegularWindow = iframeRegularEl?.contentWindow;
+    const iframeRegularWindow = window.frames['iframe-regular'];
     /** @type {HTMLIFrameElement} */
-    const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
-    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
     // This test is specifically designed to get the RTCPeerConnection object
     // before the injected script on android is run.
     // The script injected into Android's WebView from Tauri
@@ -107,24 +104,16 @@ window.addEventListener("load", () => {
     // on the parent page which created the iframe.
     const iframeContainer = document.getElementById("iframe-container");
     /** @type {Window | undefined} */
-    let iframeNotInitedWindow
     if (iframeContainer) {
         iframeContainer.innerHTML += "<iframe id=uninitiframe></iframe>"
-        iframeNotInitedWindow = uninitiframe.contentWindow;
     }
     const tests = [
         ["RTCPeerConnection", window.RTCPeerConnection],
         ["mozRTCPeerConnection", window.mozRTCPeerConnection],
         ["webkitRTCPeerConnection", window.webkitRTCPeerConnection],
-        ["iframe allow-same-origin RTCPeerConnection", iframeAllowSameOriginWindow?.RTCPeerConnection],
-        ["iframe allow-same-origin mozRTCPeerConnection", iframeAllowSameOriginWindow?.mozRTCPeerConnection],
-        ["iframe allow-same-origin webkitRTCPeerConnection", iframeAllowSameOriginWindow?.webkitRTCPeerConnection],
         ["iframe regular RTCPeerConnection", iframeRegularWindow?.RTCPeerConnection],
         ["iframe regular mozRTCPeerConnection", iframeRegularWindow?.mozRTCPeerConnection],
         ["iframe regular webkitRTCPeerConnection", iframeRegularWindow?.webkitRTCPeerConnection],
-        ["iframe regular uninitialized RTCPeerConnection", iframeNotInitedWindow?.RTCPeerConnection],
-        ["iframe regular uninitialized mozRTCPeerConnection", iframeNotInitedWindow?.mozRTCPeerConnection],
-        ["iframe regular uninitialized webkitRTCPeerConnection", iframeNotInitedWindow?.webkitRTCPeerConnection],
     ];
     const elements = [];
     const testPromises = [];
@@ -135,7 +124,7 @@ window.addEventListener("load", () => {
             h("strong", {}, `${RTCPCName}: `),
             resultEl,
         );
-        wrapperEl.style.display = 'none';
+        // wrapperEl.style.display = 'none';
         elements.push(wrapperEl);
         resultEl.innerText = 'checking...';
         const p = tryIceLeak(RTCPeerConnectionClass).then(res => {
