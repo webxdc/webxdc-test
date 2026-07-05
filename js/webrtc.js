@@ -94,10 +94,10 @@ window.addEventListener("load", () => {
 
     /** @type {HTMLIFrameElement} */
     const iframeRegularEl = document.getElementById('iframe-regular');
-    const iframeRegularWindow = iframeRegularEl?.contentWindow;
+    const iframeRegularWindow = iframeRegularEl?.contentDocument?.defaultView;
     /** @type {HTMLIFrameElement} */
     const iframeAllowSameOrigin = document.getElementById('iframe-allow-same-origin');
-    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentWindow;
+    const iframeAllowSameOriginWindow = iframeAllowSameOrigin?.contentDocument?.defaultView;
     // This test is specifically designed to get the RTCPeerConnection object
     // before the injected script on android is run.
     // The script injected into Android's WebView from Tauri
@@ -110,7 +110,7 @@ window.addEventListener("load", () => {
     let iframeNotInitedWindow
     if (iframeContainer) {
         iframeContainer.innerHTML += "<iframe id=uninitiframe></iframe>"
-        iframeNotInitedWindow = uninitiframe.contentWindow;
+        iframeNotInitedWindow = uninitiframe.contentDocument?.defaultView;
     }
     const tests = [
         ["RTCPeerConnection", window.RTCPeerConnection],
@@ -135,7 +135,7 @@ window.addEventListener("load", () => {
             h("strong", {}, `${RTCPCName}: `),
             resultEl,
         );
-        wrapperEl.style.display = 'none';
+        // wrapperEl.style.display = 'none';
         elements.push(wrapperEl);
         resultEl.innerText = 'checking...';
         const p = tryIceLeak(RTCPeerConnectionClass).then(res => {
