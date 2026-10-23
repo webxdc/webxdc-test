@@ -91,6 +91,22 @@ window.addEventListener("load", () => {
         }
     };
 
+    window.showGrantedFolders = async () => {
+        if (!window.webxdc?.getGrantedFolders) {
+            log("red", "webxdc.getGrantedFolders is not supported.");
+            return;
+        }
+        try {
+            const folders = Array.from(await window.webxdc.getGrantedFolders());
+            log("green", `getGrantedFolders() returned ${folders.length} folder(s).`);
+            for (const handle of folders) {
+                await showHandle(handle, { requestPermission: false });
+            }
+        } catch (error) {
+            log("red", `getGrantedFolders() failed: ${error}`);
+        }
+    };
+
     output.append(
         createHeader("showDirectoryPicker"),
         h(
@@ -111,6 +127,14 @@ window.addEventListener("load", () => {
                     onClick: "restoreDirectory()",
                 },
                 "Restore saved directory",
+            ),
+            h(
+                "button",
+                {
+                    style: "padding: 10px;margin: 10px;",
+                    onClick: "showGrantedFolders()",
+                },
+                "webxdc.getGrantedFolders()",
             ),
         ),
     );
