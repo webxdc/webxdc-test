@@ -101,12 +101,66 @@
             <h2>webrtc-sidechannel iframe</h2>
           </header>
           <script src="js/webrtc.js"></script>
+
+          <p><code>src</code></p>
           <iframe
             src="./iframe-webrtc-test.html"
             sandbox="allow-scripts"
             width="100%"
             height="200"
           ></iframe>
+
+          <p>
+            <code>srcdoc</code>
+            (<code>location.origin === 'null'</code> (opaque origin) for such iframes)
+          </p>
+          <!--
+          Useful to test approaches such as
+          https://github.com/ArcaneChat/android/commit/ba461e911c0af22140b29e99b2f6d99c2896624e
+          where
+          [`WebViewCompat.addJavaScriptOnEvent()`](https://developer.android.com/reference/androidx/webkit/WebViewCompat#addDocumentStartJavaScript(android.webkit.WebView,java.lang.String,java.util.Set%3Cjava.lang.String%3E))
+          takes the `allowedOriginRules`, which hypothetically might not match
+          the `'null'` (opaque) origin.
+          -->
+          <iframe
+            id="webrtc-srcdoc-iframe-regular"
+            width="100%"
+            height="200"
+          ></iframe>
+          <script>
+            window.addEventListener("load", async () => {
+              document.getElementById('webrtc-srcdoc-iframe-regular').srcdoc =
+                await (await fetch("./iframe-webrtc-test.html")).text()
+            })
+          </script>
+
+          <p><code>srcdoc sandbox</code></p>
+          <iframe
+            id="webrtc-srcdoc-iframe-sandbox-1"
+            width="100%"
+            height="200"
+            sandbox="allow-scripts"
+          ></iframe>
+          <script>
+            window.addEventListener("load", async () => {
+              document.getElementById('webrtc-srcdoc-iframe-sandbox-1').srcdoc =
+                await (await fetch("./iframe-webrtc-test.html")).text()
+            })
+          </script>
+
+          <p><code>srcdoc sandbox="allow-same-origin"</code></p>
+          <iframe
+            id="webrtc-srcdoc-iframe-sandbox-2"
+            width="100%"
+            height="200"
+            sandbox="allow-scripts allow-same-origin"
+          ></iframe>
+          <script>
+            window.addEventListener("load", async () => {
+              document.getElementById('webrtc-srcdoc-iframe-sandbox-2').srcdoc =
+                await (await fetch("./iframe-webrtc-test.html")).text()
+            })
+          </script>
         </div>
 
         <div class="card" id="iframe-output"></div>
