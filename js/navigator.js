@@ -16,6 +16,18 @@ window.addEventListener("load", () => {
           h("span", { class: isSecureContext ? "" : "red" }, isSecureContext),
           h("br"),
 
+          // `crossOriginIsolated` is responsible for the availability
+          // of `SharedArrayBuffer` and more.
+          // Can be enabled by adding `Cross-Origin-Opener-Policy`
+          // and `Cross-Origin-Embedder-Policy` headers,
+          // as long as the browser supports this
+          // (Android WebView doesn't as of writing).
+          // Feature request:
+          // https://forum.delta.chat/t/support-sharedarraybuffer-crossoriginisolated/6034?u=wofwca
+          h("strong", {}, "crossOriginIsolated: "),
+          h("span", {}, crossOriginIsolated),
+          h("br"),
+
           h("strong", {}, "User Agent: "), window.navigator.userAgent,
           h("br"),
           h("strong", {}, "Language: "),
